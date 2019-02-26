@@ -12,5 +12,13 @@ JWT_PASSPHRASE=123456
 - bin/console server:start 0.0.0.0:8081
 
 ## Работа
-
+Авторизация реализована через токен 
 Публичная коллекция в postman для работы: https://www.getpostman.com/collections/8229be25c6127aa288d6
+- Аутентифицируемся через /login_check и получаем токен
+- С bearer-заголовком (токеном) отправляем запрос на /task
+- профит
+
+## Тестирование
+```
+ ./bin/phpunit
+```
