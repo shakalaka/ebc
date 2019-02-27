@@ -10,20 +10,22 @@ final class SomeServiceTest extends WebTestCase
     /**
      * Тестирует метод тестовой задачи
      *
+     * @dataProvider dataProvider
+     *
+     * @param $num
+     * @param $data
+     * @param $expected
      * @throws ReflectionException
      */
-    public function testTaskCalc()
+    public function testTaskCalc($num, $data, $expected)
     {
-        $id = 5;
-        $data = [5, 5, 1, 7, 2, 3, 5];
-
         $mock = $this->getMockBuilder(TaskService::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $result = $this->invokeMethod($mock, 'taskCalc', [$id, $data]);
+        $result = $this->invokeMethod($mock, 'taskCalc', [$num, $data]);
 
-        $this->assertEquals($result, 4);
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -36,12 +38,20 @@ final class SomeServiceTest extends WebTestCase
      * @return mixed Method return.
      * @throws ReflectionException
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array())
+    private function invokeMethod(&$object, $methodName, array $parameters = array())
     {
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
 
         return $method->invokeArgs($object, $parameters);
+    }
+
+    public function dataProvider()
+    {
+        return [
+            [5, [5, 5, 1, 7, 2, 3, 5], 4],
+            [5, [5, 5, 5, 1, 7, 2, 1, 3, 5], 5],
+        ];
     }
 }
