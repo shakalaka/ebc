@@ -12,6 +12,15 @@ JWT_PASSPHRASE=123456
 - bin/console server:start 0.0.0.0:8081
 - bin/console doctrine:migrations:migrate
 
+##### Добавление пользователя через http
+```
+curl -X POST http://localhost:8081/register -d username=test -d password=test
+```
+##### Добавление пользователя миграцией
+```
+php bin/console doctrine:fixtures:load
+```
+
 ## Работа
 ### web
 Авторизация реализована через токен 
