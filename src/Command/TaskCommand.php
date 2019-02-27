@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Repository\UserRepository;
 use App\Service\TaskService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -19,12 +20,19 @@ class TaskCommand extends Command
     private $taskService;
 
     /**
+     * @var UserRepository
+     */
+    private $userRepository;
+
+    /**
      * TaskCommand constructor.
      * @param TaskService $taskService
+     * @param UserRepository $userRepository
      */
-    public function __construct(TaskService $taskService)
+    public function __construct(TaskService $taskService, UserRepository $userRepository)
     {
         $this->taskService = $taskService;
+        $this->userRepository = $userRepository;
 
         parent::__construct();
     }
@@ -59,9 +67,12 @@ class TaskCommand extends Command
 
         $io->note(sprintf("\r\nВы ввели следующие данные:\n\rn: %s\n\rdata: %s\n\ruser: %s", $int, $data, $user ? $user : '-'));
         $data = explode(',', $data);
+        if ($user !== null) {
+            $userData = $this->userRepository->findOneBy(['id' => $user]);
+        }
 
         try {
-            $result = $this->taskService->process($int, $data, $user);
+            $result = $this->taskService->process($int, $data, $userData);
             $io->success(sprintf('Результат выполнения задачи: %d', $result));
         } catch (\Exception $e) {
             $io->error($e->getMessage());
