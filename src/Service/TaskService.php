@@ -66,21 +66,43 @@ class TaskService
     private function taskCalc($num, $data) : int
     {
 
-        $out = 0;
-        $in = 0;
+        $key_out=  0;
+        $key_in = 0;
+        $i = 0;
         $size = sizeof($data);
+
         foreach ($data as $k => $v) {
-            if ($v !== $num) {
-                $out += 1;
-            } else {
-                $in += 1;
+            $out = $i;
+            $in = $i;
+
+            if ($key_in + $key_out >= $size) {
+                break;
             }
 
-            if ($k % ceil($size / 2) === 0 && $in > 1 && $out > 1) {
-                return $k;
+            if ($data[$key_in] === $num) {
+                $in++;
             }
+
+            if ($data[$size - $key_out - 1] !== $num) {
+                $out++;
+            }
+
+            if ($in > $out) {
+                $key_out++;
+                continue;
+            }
+
+            if ($in < $out) {
+                $key_in++;
+                continue;
+            }
+
+            $key_in++;
+            $key_out++;
+
+            $i = $in;
         }
 
-        return -1;
+        return $i ? $key_in: -1;
     }
 }
