@@ -52,6 +52,7 @@ final class SomeServiceTest extends WebTestCase
         return [
             [5, [5, 5, 1, 7, 2, 3, 5], 4],
             [5, [5, 5, 5, 1, 7, 2, 1, 3, 5], 5],
+            [5, [5, 5, 5, 1], 1],
         ];
     }
 }

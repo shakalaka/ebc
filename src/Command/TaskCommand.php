@@ -64,6 +64,7 @@ class TaskCommand extends Command
         $int = $input->getArgument('n');
         $data = $input->getArgument('data');
         $user = $input->getArgument('user');
+        $userData = null;
 
         $io->note(sprintf("\r\nВы ввели следующие данные:\n\rn: %s\n\rdata: %s\n\ruser: %s", $int, $data, $user ? $user : '-'));
         $data = explode(',', $data);
